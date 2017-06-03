@@ -1,0 +1,51 @@
+/**
+*	算法库函数  by kolonse
+*/
+static unsigned char _BelongTo(char c,const char* flags);
+/// 读取到
+const char* _ReadTo(char endFlag,const char* str,char* out,int* outSize)
+{
+	*outSize = 0 ;
+	while(*str != '\0' && *str != endFlag)
+	{
+		out[*outSize] = *str ;
+		(*outSize) ++ ;
+		str ++ ;
+	}
+	return str ;
+}
+
+/// 读取到 flags
+const char* _ReadToFlags(const char* flags,const char* str,char* out,int* outSize)
+{
+	unsigned char mark = 0 ;
+	*outSize = 0 ;
+	while(*str != '\0')
+	{
+		if(_BelongTo(*str,flags))
+		{
+			if(!(mark && *(str -1) == '\\'))
+			{
+				break ;
+			}
+		}
+		out[*outSize] = *str ;
+		(*outSize) ++ ;
+		str ++ ;
+		mark = 1 ;
+	}
+	return str ;
+}
+
+unsigned char _BelongTo(char c,const char* flags)
+{
+	while(*flags != '\0')
+	{
+		if(c == *flags)
+		{
+			return 1 ;
+		}
+		flags ++ ;
+	}
+	return 0;
+}
